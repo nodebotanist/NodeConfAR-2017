@@ -17,7 +17,6 @@ module.exports.githubEvent = (event, context, callback) => {
       }
     }, (err, data) => {
       if(err){
-        console.log(err)
         message = err
       }
     })
