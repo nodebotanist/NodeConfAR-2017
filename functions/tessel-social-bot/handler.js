@@ -11,7 +11,7 @@ module.exports.githubEvent = (event, context, callback) => {
     docClient.put({
       TableName: 'SocialEvents',
       Item: {
-        time: new Date().toDateString(),
+        time: new Date() + '',
         type: 'GitHub Push',
         repo: event.repository.name
       }
