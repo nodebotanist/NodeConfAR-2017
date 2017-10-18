@@ -3,6 +3,8 @@
 module.exports.githubEvent = (event, context, callback) => {
   let statusCode = 200
 
+  event = JSON.parse(event)
+
   if(event.repository && event.repository.name){
     console.log(event.repository.name)
   }
