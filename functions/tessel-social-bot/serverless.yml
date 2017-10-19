@@ -63,6 +63,12 @@ functions:
     handler: handler.twitterFollower
   twitterMention:
     handler: handler.twitterMention
+  twitchFollower:
+    handler: handler.twitchFollower
+  twitchStream:
+    handler: handler.twitchStream
+  iopipeEvent:
+    handler: handler.IOpipeEvent
   getEvents:
     handler: handler.getEvents
 
