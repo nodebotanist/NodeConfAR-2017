@@ -40,8 +40,6 @@ module.exports.getEvents = function(event, context, callback){
   docClient.scan({
     TableName: 'SocialEvents'
   }, (err, data) => {
-    console.log(err || data);
-
     const response = {
       statusCode,
       body: JSON.stringify({
@@ -49,7 +47,33 @@ module.exports.getEvents = function(event, context, callback){
         input: event,
       }),
     };
+
     callback(null, response);
+
+    let toBeDeleted = []
+
+    for(let i = 0; i < data.Items.length; i++){
+      toBeDeleted.push({
+        DeleteRequest: {
+          Key: {
+            time: data.Items[i].time
+          }
+        }
+      })
+    }
+
+    if(toBeDeleted.length > 0){
+      docClient.batchWrite({
+        RequestItems:{
+          SocialEvents: toBeDeleted
+        }
+      }, 
+      (err, data) => {
+        if(err){
+          console.log(err)
+        }
+      })
+    }
   })
 
 
