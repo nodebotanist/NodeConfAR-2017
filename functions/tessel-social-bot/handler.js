@@ -33,3 +33,24 @@ module.exports.githubEvent = (event, context, callback) => {
 
   callback(null, response);
 };
+
+module.exports.getEvents = function(event, context, callback){
+  let statusCode = 200
+
+  docClient.scan({
+    TableName: 'SocialEvents'
+  }, (err, data) => {
+    console.log(err || data);
+
+    const response = {
+      statusCode,
+      body: JSON.stringify({
+        message: err || data,
+        input: event,
+      }),
+    };
+    callback(null, response);
+  })
+
+
+}
