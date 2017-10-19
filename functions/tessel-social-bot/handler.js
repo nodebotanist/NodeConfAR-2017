@@ -34,6 +34,90 @@ module.exports.githubEvent = (event, context, callback) => {
   callback(null, response);
 };
 
+module.exports.twitterTweet = function(event, context, callback){
+  let statusCode = 200
+  let message = 'event added'
+
+  docClient.put({
+    TableName: 'SocialEvents',
+    Item: {
+      time: new Date() + '',
+      type: 'Tweet'
+    }
+  }, (err, data) => {
+    if(err){
+      console.log(err)
+      message = err
+    }
+  })
+
+  const response = {
+    statusCode,
+    body: JSON.stringify({
+      message,
+      input: event,
+    }),
+  };
+
+  callback(null, response);  
+}
+
+module.exports.twitterFollower = function(event, context, callback){
+  let statusCode = 200
+  let message = 'event added'
+
+  docClient.put({
+    TableName: 'SocialEvents',
+    Item: {
+      time: new Date() + '',
+      type: 'TwitterFollower'
+    }
+  }, (err, data) => {
+    if(err){
+      console.log(err)
+      message = err
+    }
+  })
+
+  const response = {
+    statusCode,
+    body: JSON.stringify({
+      message,
+      input: event,
+    }),
+  };
+
+  callback(null, response);  
+}
+
+module.exports.twitterMention = function(event, context, callback){
+  let statusCode = 200
+  let message = 'event added'
+
+  docClient.put({
+    TableName: 'SocialEvents',
+    Item: {
+      time: new Date() + '',
+      type: 'TwitterMention'
+    }
+  }, (err, data) => {
+    if(err){
+      console.log(err)
+      message = err
+    }
+  })
+
+  const response = {
+    statusCode,
+    body: JSON.stringify({
+      message,
+      input: event,
+    }),
+  };
+
+  callback(null, response);  
+}
+
 module.exports.getEvents = function(event, context, callback){
   let statusCode = 200
 

@@ -57,6 +57,12 @@ provider:
 functions:
   githubEvent:
     handler: handler.githubEvent
+  twitterTweet:
+    handler: handler.twitterTweet
+  twitterFollower:
+    handler: handler.twitterFollower
+  twitterMention:
+    handler: handler.twitterMention
   getEvents:
     handler: handler.getEvents
 
