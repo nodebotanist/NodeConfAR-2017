@@ -30,7 +30,7 @@ DotStarStrip.prototype.init = function(clockSpeed){
 
 DotStarStrip.prototype.clear = function(cb){
   for(let i=32; i < this.pixels.length - this.endFrameLength; i+=4){
-    this.pixels[i] = 0xFF
+    this.pixels[i] = 0xE0
     this.pixels[i+1] = 0x00
     this.pixels[i+2] = 0x00
     this.pixels[i+3] = 0x00
@@ -46,10 +46,10 @@ DotStarStrip.prototype.setPixel = function(options, cb){
   //TODO: Validate options: need pixel, color array of rgb or red, green, blue
   let offset = 32 + 4 * options.pixel
 
-  this.pixels[offset] = 0x33
-  this.pixels[offset + 1] = options.color[0] | 0xFF
-  this.pixels[offset + 2] = options.color[1] | 0xFF
-  this.pixels[offset + 3] = options.color[2] | 0xFF
+  this.pixels[offset] = 0xE4
+  this.pixels[offset + 1] = options.color[2] | 0x00
+  this.pixels[offset + 2] = options.color[1] | 0x00
+  this.pixels[offset + 3] = options.color[0] | 0x00
 
   // console.log(pixels)
 

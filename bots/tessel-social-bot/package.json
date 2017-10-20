@@ -13,7 +13,7 @@
   "license": "MIT",
   "readme": "A bare bones Tessel 2 blinky script.",
   "dependencies": {
-    "adafruit-serial-lcd": "0.0.3",
+    "adafruit-serial-lcd": "0.0.5",
     "dotenv": "^4.0.0",
     "johnny-five": "^0.11.6",
     "request": "^2.83.0",

@@ -6,7 +6,7 @@ board = new five.Board({
   io: new Tessel()
 }),
 DotStar = require('./dotstar'),
-lights = new DotStar(15, 'A');
+lights = new DotStar(20, 'A');
 
 const request = require('request')
 
@@ -87,6 +87,8 @@ board.on('ready', function() {
   lights.init(4000000);
 
   serialLCD.on('ready', () => {
+    serialLCD.setBrightness(150)
+    serialLCD.setContrast(220)
     setInterval(() => {
       if(eventQueue.length > 0){
         let event = eventQueue.pop()
