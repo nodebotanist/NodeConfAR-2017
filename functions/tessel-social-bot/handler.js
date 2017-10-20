@@ -15,7 +15,7 @@ module.exports.githubEvent = iopipe((event, context, callback) => {
       TableName: 'SocialEvents',
       Item: {
         time: new Date() + '',
-        type: 'GitHub Push',
+        type: 'GitHubPush',
         repo: event.repository.name
       }
     }, (err, data) => {
