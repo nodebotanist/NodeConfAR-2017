@@ -48,27 +48,27 @@ function parseEventText(eventData) {
         break
       case 'Tweet':
         color = [0, 0, 255]
-        message = 'Nodebotanist just tweeted!'
+        message = 'Nodebotanist just   tweeted!'
         break
       case 'TwitterFollower':
         color = [0, 0, 255]
-        message = 'Nodebotanist just gained a new Twitter follower!'
+        message = 'Nodebotanist just   gained a new Twitterfollower!'
         break
       case 'TwitterMention':
         color = [0, 0, 255]
-        message = 'Nodebotanist was just mentioned on Twitter!'
+        message = 'Nodebotanist was    just mentioned on   Twitter!'
         break
       case 'TwitchFollower':
         color = [150, 0, 255]
-        message = 'Nodebotanist just gained a new Twitch follower!'
+        message = 'Nodebotanist just   gained a new Twitch follower!'
         break
       case 'TwitchStream':
         color = [150, 0, 255]
-        message = 'Nodebotanist just went live on Twitch!'
+        message = 'Nodebotanist just   went live on Twitch!'
         break
       case 'IOpipeEvent':
         color = [0, 255, 100]
-        message = 'Nodebotanist just got an IOpipe alert!'
+        message = 'Nodebotanist just   got an IOpipe alert!'
         break
     }
 
