@@ -44,7 +44,7 @@ function parseEventText(eventData) {
     switch(eventData[i].type){
       case 'GitHubPush':
         color = [0, 255, 0]
-        message = 'Nodebotanist pushed to the ' + eventData.repo + ' GitHub repo!'
+        message = 'Nodebotanist pushed to the ' + eventData[i].repo + ' GitHub repo!'
         break
       case 'Tweet':
         color = [0, 0, 255]
