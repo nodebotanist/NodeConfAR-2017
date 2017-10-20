@@ -8,6 +8,12 @@ board = new five.Board({
 DotStar = require('./dotstar'),
 lights = new DotStar(15, 'A');
 
+const request = require('request')
+
+let secrets = require('./secrets')
+
+let eventQueue = []
+
 const AdafruitSerialLCD = require('adafruit-serial-lcd')
 
 let serialLCD = new AdafruitSerialLCD({
@@ -15,23 +21,30 @@ let serialLCD = new AdafruitSerialLCD({
   baud: 9600
 })
 
-board.on('ready', function() {
-  lights.init(4000000);
+function getEvents() {
+  request(secrets.EVENTS_URL, (err, res, body) => {
+    console.log(err || body)
+  })
+}
 
+function parseEventText(eventData) {
+
+}
+  
+
+board.on('ready', function() {
+
+  lights.init(4000000);
   lights.test();
 
   serialLCD.on('ready', () => {
-    serialLCD.setSize(20, 4)
-    serialLCD.moveCursor(1, 1)
-    serialLCD.print("ABCDEFGHIJABCDEFGHIJ")
-    serialLCD.moveCursor(1, 2)
-    serialLCD.print("********************")
-    serialLCD.moveCursor(1, 3)
-    serialLCD.print("ABCDEFGHIJABCDEFGHIJ")
-    serialLCD.moveCursor(1, 4)
-    serialLCD.print("********************")
-    setTimeout(serialLCD.clear.bind(serialLCD), 10000)
+    setInterval(() => {
+
+    }, 5000);
   })
 
   serialLCD.start()
-});
+})
+
+getEvents()
+setInterval(getEvents, 10000)

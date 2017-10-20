@@ -14,7 +14,9 @@
   "readme": "A bare bones Tessel 2 blinky script.",
   "dependencies": {
     "adafruit-serial-lcd": "0.0.2",
+    "dotenv": "^4.0.0",
     "johnny-five": "^0.11.6",
+    "request": "^2.83.0",
     "tessel-io": "^1.0.1"
   }
 }
