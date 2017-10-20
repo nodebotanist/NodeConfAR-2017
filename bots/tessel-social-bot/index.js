@@ -94,6 +94,13 @@ board.on('ready', function() {
             pixel: i,
             color: event.color
           })
+          serialLCD.setBacklightColor({
+            red: event.color[0],
+            green: event.color[1],
+            blue: event.color[2]
+          })
+          serialLCD.clear()
+          serialLCD.print(event.message)
         }
       }
     }, 5000);
