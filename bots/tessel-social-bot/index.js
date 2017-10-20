@@ -23,12 +23,31 @@ let serialLCD = new AdafruitSerialLCD({
 
 function getEvents() {
   request(secrets.EVENTS_URL, (err, res, body) => {
-    console.log(err || body)
+    if(err){
+      console.log(err)
+    } else {
+      parseEventText(JSON.parse(JSON.parse(body).body).message.Items);
+    }
   })
 }
 
 function parseEventText(eventData) {
+  for(let i=0; i < eventData.length; i++){
+    let message = ''
 
+    switch(eventData[i].type){
+      case 'Github Push':
+        message = 'Nodebotanist pushed to the ' + eventData.repo + ' repo!'
+        break
+      case 'Tweet':
+        message = 'Nodebotanist just tweeted!'
+        break
+    }
+
+    eventQueue.push(message)
+  }
+
+  console.log(eventQueue)
 }
   
 
