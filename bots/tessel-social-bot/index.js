@@ -35,12 +35,14 @@ function parseEventText(eventData) {
   if(eventData.length == 0){
     return
   }
+
+  console.log(eventData)
   for(let i=0; i < eventData.length; i++){
     let message = ''
     let color = []
 
     switch(eventData[i].type){
-      case 'Github Push':
+      case 'GitHubPush':
         color = [0, 255, 0]
         message = 'Nodebotanist pushed to the ' + eventData.repo + ' GitHub repo!'
         break
