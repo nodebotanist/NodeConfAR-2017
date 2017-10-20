@@ -32,19 +32,48 @@ function getEvents() {
 }
 
 function parseEventText(eventData) {
+  if(eventData.length == 0){
+    return
+  }
   for(let i=0; i < eventData.length; i++){
     let message = ''
+    let color = []
 
     switch(eventData[i].type){
       case 'Github Push':
-        message = 'Nodebotanist pushed to the ' + eventData.repo + ' repo!'
+        color = [0, 255, 0]
+        message = 'Nodebotanist pushed to the ' + eventData.repo + ' GitHub repo!'
         break
       case 'Tweet':
+        color = [0, 0, 255]
         message = 'Nodebotanist just tweeted!'
+        break
+      case 'TwitterFollower':
+        color = [0, 0, 255]
+        message = 'Nodebotanist just gained a new Twitter follower!'
+        break
+      case 'TwitterMention':
+        color = [0, 0, 255]
+        message = 'Nodebotanist was just mentioned on Twitter!'
+        break
+      case 'TwitchFollower':
+        color = [150, 0, 255]
+        message = 'Nodebotanist just gained a new Twitch follower!'
+        break
+      case 'TwitchStream':
+        color = [150, 0, 255]
+        message = 'Nodebotanist just went live on Twitch!'
+        break
+      case 'IOpipeEvent':
+        color = [0, 255, 100]
+        message = 'Nodebotanist just got an IOpipe alert!'
         break
     }
 
-    eventQueue.push(message)
+    eventQueue.push({
+      message,
+      color
+    })
   }
 
   console.log(eventQueue)
@@ -54,11 +83,19 @@ function parseEventText(eventData) {
 board.on('ready', function() {
 
   lights.init(4000000);
-  lights.test();
 
   serialLCD.on('ready', () => {
     setInterval(() => {
-
+      if(eventQueue.length > 0){
+        let event = eventQueue.pop()
+        console.log(event)
+        for(let i=0; i < lights.numPixels; i++){
+          lights.setPixel({
+            pixel: i,
+            color: event.color
+          })
+        }
+      }
     }, 5000);
   })
 

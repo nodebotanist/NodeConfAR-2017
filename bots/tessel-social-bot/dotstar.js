@@ -46,10 +46,12 @@ DotStarStrip.prototype.setPixel = function(options, cb){
   //TODO: Validate options: need pixel, color array of rgb or red, green, blue
   let offset = 32 + 4 * options.pixel
 
-  this.pixels[offset] = 0x44
-  this.pixels[offset + 1] = options.color[0]
-  this.pixels[offset + 2] = options.color[1]
-  this.pixels[offset + 3] = options.color[2]
+  this.pixels[offset] = 0x33
+  this.pixels[offset + 1] = options.color[0] | 0xFF
+  this.pixels[offset + 2] = options.color[1] | 0xFF
+  this.pixels[offset + 3] = options.color[2] | 0xFF
+
+  // console.log(pixels)
 
   this.spi.transfer(this.pixels, cb)
 }
