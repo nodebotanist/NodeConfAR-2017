@@ -18,8 +18,12 @@ SPI1.setup({miso: LCD_MISO_PIN, mosi: LCD_MOSI_PIN, sck: LCD_SCK_PIN, baud: LCD_
 var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, function(){
   g.setRotation(2, 1); // fix mirroring issue, flip right-side up
   g.clear();
-  g.drawString("Hello",0,0);
+  g.setFontVector(30);
+  g.setColor(0,.25,.75);
+  g.drawString("Kassandra Perch",12,80);
   g.setFontVector(20);
-  g.setColor(.5,0,.25);
-  g.drawString("Espruino",0,10);
+  g.setColor(1,1,1);
+  g.drawString("@nodebotanist",12,120);
+  g.setColor(.25, .75, 0)
+  g.drawString("DewRel @ IOpipe")
 });
