@@ -13,8 +13,14 @@ const LCD_BAUD = 10000000;
 
 const LCD = require('ILI9341-mod');
 
+var http = require("http");
+http.createServer(function (req, res) {
+  res.writeHead(200);
+  res.end("Hello World");
+}).listen(1337);
+
 const wifi = require("Wifi");
-wifi.connect("nodebotanist-skynet", {password:"*****"}, function(err){
+wifi.connect("*****", {password:"*****"}, function(err){
   console.log("connected? err=", err, "info=", wifi.getIP());
 });
 
@@ -50,5 +56,18 @@ var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, function(){
   g.setColor(0.1, 0.75, 0);
   g.drawString("DevRel @ IOpipe", 12, 145);
   clearTop();
+  setInterval(()=>{
+    g.setColor(0,0,0);
+    g.fillRect(0,225,160,240);
+    g.setColor(1, 0, .25);
+    g.setFontVector(10);
+    g.drawString(wifi.getIP().ip, 12, 225);
+  }, 10000);
+  addStatusBar(0,0,1);
+  addStatusBar(0,0,1);
+  addStatusBar(.5,0,1);
+  addStatusBar(0,0,1);
+  addStatusBar(0,1,0);
+  
 });
 
