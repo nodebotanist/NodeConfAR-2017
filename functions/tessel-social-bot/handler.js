@@ -207,10 +207,15 @@ module.exports.IOpipeEvent = function(event, context, callback){
 
 module.exports.getEvents = function(event, context, callback){
   let statusCode = 200
+  var params = {
+    TableName : "SocialEvents",
+    FilterExpression:"attribute_not_exists(#tg)",
+    ExpressionAttributeNames: {
+      "#tg": 'tesselGrabbed'
+    }
+  };
 
-  docClient.scan({
-    TableName: 'SocialEvents'
-  }, (err, data) => {
+  docClient.scan(params, (err, data) => {
     const response = {
       statusCode,
       body: JSON.stringify({
@@ -221,22 +226,21 @@ module.exports.getEvents = function(event, context, callback){
 
     callback(null, response);
 
-    let toBeDeleted = []
-
+    let toBeUpdated = []
+    console.log(data)
     for(let i = 0; i < data.Items.length; i++){
-      toBeDeleted.push({
-        DeleteRequest: {
-          Key: {
-            time: data.Items[i].time
-          }
+      data.Items[i].tesselGrabbed = 'true';
+      toBeUpdated.push({
+        PutRequest: {
+          Item: data.Items[i]
         }
       })
     }
 
-    if(toBeDeleted.length > 0){
+    if(toBeUpdated.length > 0){
       docClient.batchWrite({
         RequestItems:{
-          SocialEvents: toBeDeleted
+          SocialEvents: toBeUpdated
         }
       }, 
       (err, data) => {
