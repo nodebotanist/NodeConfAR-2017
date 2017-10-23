@@ -211,7 +211,7 @@ module.exports.getEvents = function(event, context, callback){
     TableName : "SocialEvents",
     FilterExpression:"attribute_not_exists(#tg)",
     ExpressionAttributeNames: {
-      "#tg": 'tesselGrabbed'
+      "#tg": (event.queryStringParameters ? event.queryStringParameters.platform + 'Grabbed' : 'tesselGrabbed')
     }
   };
 
@@ -226,28 +226,37 @@ module.exports.getEvents = function(event, context, callback){
 
     callback(null, response);
 
-    let toBeUpdated = []
-    console.log(data)
-    for(let i = 0; i < data.Items.length; i++){
-      data.Items[i].tesselGrabbed = 'true';
-      toBeUpdated.push({
-        PutRequest: {
-          Item: data.Items[i]
+    if(event && event.queryStringParameters && event.queryStringParameters.platform){
+      for(let l=0; l < data.Items.length +25; l+= 25){
+        let toBeUpdated = []
+        for(let i = 0; (l*25) + i < data.Items.length && i < 25; i++){
+          console.log(l, i)
+          if(event.queryStringParameters.platform == 'tessel'){
+            data.Items[(l*25) + i].tesselGrabbed = 'true';
+          } else if(event.queryStringParameters.platform == 'badge') {
+            data.Items[(l*25) + i].badgeGrabbed = 'true';
+          }
+          
+          toBeUpdated.push({
+            PutRequest: {
+              Item: data.Items[(l * 25) + i]
+            }
+          })
         }
-      })
-    }
-
-    if(toBeUpdated.length > 0){
-      docClient.batchWrite({
-        RequestItems:{
-          SocialEvents: toBeUpdated
+        console.log(toBeUpdated)
+        if(toBeUpdated.length > 0){
+          docClient.batchWrite({
+            RequestItems:{
+              SocialEvents: toBeUpdated
+            }
+          }, 
+          (err, data) => {
+            if(err){
+              console.log(err)
+            }
+          })
         }
-      }, 
-      (err, data) => {
-        if(err){
-          console.log(err)
-        }
-      })
+      }
     }
   })
 
