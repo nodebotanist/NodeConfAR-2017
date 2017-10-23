@@ -25,8 +25,10 @@ function getEvents() {
   request(secrets.EVENTS_URL, (err, res, body) => {
     if(err){
       console.log(err)
+    } else if(body != "undefined") {
+      parseEventText(JSON.parse(body).message.Items);
     } else {
-      parseEventText(JSON.parse(JSON.parse(body).body).message.Items);
+      console.log('No body!')
     }
   })
 }
