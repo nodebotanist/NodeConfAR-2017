@@ -185,7 +185,7 @@ module.exports.IOpipeEvent = function(event, context, callback){
     TableName: 'SocialEvents',
     Item: {
       time: new Date() + '',
-      type: 'IOpipe Event'
+      type: 'IOpipeEvent'
     }
   }, (err, data) => {
     if(err){
