@@ -14,32 +14,39 @@ const LCD_BAUD = 10000000;
 const LCD = require('ILI9341-mod');
 
 var http = require("http");
+const wifi = require("Wifi");
+
+setTimeout(() => { 
+  wifi.connect("****", {password:"****"}, function(err){
+  console.log("connected? err=", err, "info=", wifi.getIP());
+});
+  
 http.createServer(function (req, res) {
   var URL = url.parse(req.url, true);
   if(URL.query && URL.query.passcode == '****'){
     if(URL.query.red && URL.query.green && URL.query.blue){
-      addStatusBar(red/255, green/255, blue/255)
+      addStatusBar(URL.query.red/255, URL.query.green/255, URL.query.blue/255);
     }
   }
+  res.end();
 }).listen(1337);
-
-const wifi = require("Wifi");
-wifi.connect("*****", {password:"*****"}, function(err){
-  console.log("connected? err=", err, "info=", wifi.getIP());
-});
+}, 5000);
 
 digitalWrite(LCD_BACKLIGHT_PIN, 0); // turn on the backlight
-SPI1.setup({miso: LCD_MISO_PIN, mosi: LCD_MOSI_PIN, sck: LCD_SCK_PIN, baud: LCD_BAUD});
-var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, function(){
 
-  let clearTop = () => {
+let clearTop = () => {};
+let addStatusBar = () => {};
+let statusBarCount = 0;
+
+SPI1.setup({miso: LCD_MISO_PIN, mosi: LCD_MOSI_PIN, sck: LCD_SCK_PIN, baud: LCD_BAUD});
+var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, () => {
+
+  clearTop = () => {
     g.setColor(0,0,0);
     g.fillRect(0,0,320,70);
   };
   
-  let statusBarCount = 0;
-  
-  let addStatusBar = (r, gr, b) => {
+  addStatusBar = (r, gr, b) => {
     if(statusBarCount == 10){
       clearTop();
       statusBarCount = 0;
@@ -63,9 +70,10 @@ var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, function(){
   setInterval(()=>{
     g.setColor(0,0,0);
     g.fillRect(0,225,160,240);
-    g.setColor(1, 0, .25);
+    g.setColor(1, 0, 0.25);
     g.setFontVector(10);
     g.drawString(wifi.getIP().ip, 12, 225);
   }, 10000);
 });
 
+save();
