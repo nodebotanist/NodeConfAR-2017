@@ -78,11 +78,17 @@ function parseEventText(eventData) {
       message,
       color
     })
+    sendEventsToBadge()
   }
-
-  console.log(eventQueue)
 }
-  
+
+sendEventsToBadge = () =>{
+  for(let i=0; i<eventQueue.length; i++){
+    request(secrets.BADGE_IP + '?red=' + eventQueue[i].color[0] + '&green=' + eventQueue[i].color[1] + '&blue=' + eventQueue[i].color[2] + '&passcode=' + secrets.BADGE_PASSCODE, (err){
+      if(err) console.log(err)
+    })
+  }
+}
 
 board.on('ready', function() {
 
