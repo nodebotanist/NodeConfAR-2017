@@ -15,8 +15,12 @@ const LCD = require('ILI9341-mod');
 
 var http = require("http");
 http.createServer(function (req, res) {
-  res.writeHead(200);
-  res.end("Hello World");
+  var URL = url.parse(req.url, true);
+  if(URL.query && URL.query.passcode == '****'){
+    if(URL.query.red && URL.query.green && URL.query.blue){
+      addStatusBar(red/255, green/255, blue/255)
+    }
+  }
 }).listen(1337);
 
 const wifi = require("Wifi");
@@ -63,11 +67,5 @@ var g = LCD.connect(SPI1, LCD_DC_PIN, LCD_CS_PIN, LCD_RESET_PIN, function(){
     g.setFontVector(10);
     g.drawString(wifi.getIP().ip, 12, 225);
   }, 10000);
-  addStatusBar(0,0,1);
-  addStatusBar(0,0,1);
-  addStatusBar(.5,0,1);
-  addStatusBar(0,0,1);
-  addStatusBar(0,1,0);
-  
 });
 
