@@ -16,11 +16,12 @@ let eventQueue = []
 
 const AdafruitSerialLCD = require('adafruit-serial-lcd')
 
+console.log("Starting LCD...")
 let serialLCD = new AdafruitSerialLCD({
   port: '/dev/ttyACM0',
   baud: 9600
 })
-
+console.log("LCD Started.")
 function getEvents() {
   request(secrets.EVENTS_URL, (err, res, body) => {
     if(err){
@@ -33,7 +34,16 @@ function getEvents() {
   })
 }
 
+function sendEventsToBadge(){
+  for(let i=0; i<eventQueue.length; i++){
+    request(secrets.BADGE_IP + '?red=' + eventQueue[i].color[0] + '&green=' + eventQueue[i].color[1] + '&blue=' + eventQueue[i].color[2] + '&passcode=' + secrets.BADGE_PASSCODE, (err) => {
+      if(err) console.log(err)
+    })
+  }
+}
+
 function parseEventText(eventData) {
+  console.log("parsing event text")
   if(eventData.length == 0){
     return
   }
@@ -82,16 +92,9 @@ function parseEventText(eventData) {
   }
 }
 
-sendEventsToBadge = () =>{
-  for(let i=0; i<eventQueue.length; i++){
-    request(secrets.BADGE_IP + '?red=' + eventQueue[i].color[0] + '&green=' + eventQueue[i].color[1] + '&blue=' + eventQueue[i].color[2] + '&passcode=' + secrets.BADGE_PASSCODE, (err){
-      if(err) console.log(err)
-    })
-  }
-}
 
 board.on('ready', function() {
-
+  console.log("Board ready")
   lights.init(4000000);
 
   serialLCD.on('ready', () => {
