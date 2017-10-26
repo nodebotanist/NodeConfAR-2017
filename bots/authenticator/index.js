@@ -1,3 +1,6 @@
+const KEYPRESS_LED_PIN = D13;
+const SUCCESS_LED_PIN = D12;
+
 let code = '';
 let value = 0;
 let debounced = true;
@@ -19,9 +22,13 @@ const KEY_MAX = {
 };
 
 const wifi = require("Wifi");
-wifi.connect("****", {password:"***"}, function(err){
+const http = require('http');
+wifi.connect("***", {password:"***"}, function(err){
   console.log("connected? err=", err, "info=", wifi.getIP());
 });
+
+digitalWrite(KEYPRESS_LED_PIN, 0);
+digitalWrite(SUCCESS_LED_PIN, 0);
 
 setInterval(() => {
   value = analogRead();
@@ -62,7 +69,10 @@ setInterval(() => {
     } else if (value < KEY_MAX.ONE){
       code += "1";
       console.log(code);
-    } 
+    }
+    
+    digitalWrite(KEYPRESS_LED_PIN, 1);
+    setTimeout(() => { digitalWrite(KEYPRESS_LED_PIN, 0); }, 250);
     
     debounced = false;
   } else if (!debounced) {
@@ -75,6 +85,9 @@ setInterval(() => {
   
   if(code == "***"){
     console.log("success");
+    digitalWrite(SUCCESS_LED_PIN, 1);
+    setTimeout(() => { digitalWrite(SUCCESS_LED_PIN, 0); }, 1000);
     code='';
+    http.get('http://***/success', (res) => {console.log(res);});
   }
 }, 50);
